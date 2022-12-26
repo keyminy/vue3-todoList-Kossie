@@ -1,28 +1,7 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <form 
-      @submit.prevent="onSubmit">
-      <div class="d-flex">
-        <div class="flex-grow-1 mr-2">
-          <input 
-          class="form-control"
-          type="text" 
-          v-model="todo"
-          placeholder="Type new to-do"
-          >
-        </div>
-        <div>
-          <button 
-            class="btn btn-primary" 
-            type="submit"
-          >Add</button>
-        </div>
-      </div>
-      <div v-show="hasError" style="color:tomato">
-        This field cannot be empty!!
-      </div>
-    </form>
+    <TodoSimpleFormVue @add-todo="addTodo"/>
     <div v-if="!todos.length">
       추가된 Todo가 없습니다.
     </div>
@@ -59,44 +38,43 @@
 
 <script>
 import {ref} from 'vue';
+import TodoSimpleFormVue from './components/TodoSimpleForm.vue';
 
 export default {
+  components : {
+    TodoSimpleFormVue
+  },
   setup () {
-    const todo = ref('');
+
     const todos = ref([
     ]);
-    const hasError = ref(false);
+
     const todoStyle = {
       textDecoration: 'line-through',
       color: 'gray'
     };
-    const onSubmit = () => {
-      if(todo.value === ''){
-        hasError.value = true;
-      }else{
-        //input창에 값을 입력한 경우니까 push
+    /* 자식(TodoSimpleForm.vue)로 부터 추가된 TodoList {}값
+    을 받아서 추가해준다. */
+    const addTodo = (todo) => {
+      todos.value.push(todo);
+    }
+    /* //emit을 안썼을때 방식
         todos.value.push({
           id: Date.now(),
           subject : todo.value,
           completed : false,
         });
-        //잘 추가가 됬으면 에러메시지 없애주기
-        hasError.value = false;
-        //input값 초기화
-        todo.value = '';
-      }
-    }
+    */
+    
 
     const deleteTodo = (idx) => {
       todos.value.splice(idx,1);
     }
 
     return {
-      todo,
       todos,
-      onSubmit,
-      hasError,
       todoStyle,
+      addTodo,
       deleteTodo
     }
   }
