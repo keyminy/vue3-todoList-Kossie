@@ -38,19 +38,27 @@ export default {
       required: true
     }
   },
-  setup (props,context) {
+  emits:['toggle-todo','delete-todo'],
+  setup (props,{emit}) {
     const toggleTodo = (idx) => {
       //idx를 부모컴포넌트로 보내준다.
-      context.emit('toggle-todo',idx);
-      
+      emit('toggle-todo',idx);
     }
+    //App.vue부모컴포넌트에 idx값 전달
+    const deleteTodo = (idx) => {
+      emit('delete-todo',idx);
+    };
     return {
-      toggleTodo
+      toggleTodo,
+      deleteTodo
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+  .todo {
+    color:gray;
+    text-decoration: line-through;
+  }
 </style>
