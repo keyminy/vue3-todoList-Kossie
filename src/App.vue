@@ -41,22 +41,43 @@ export default {
       textDecoration: 'line-through',
       color: 'gray'
     };
-    /* 자식(TodoSimpleForm.vue)로 부터 추가된 TodoList {}값
-    을 받아서 추가해준다. */
-    const addTodo = (todo) => {
-      error.value = '';
-      //DB에 todo를 저장
-      //axios 2번째 인자 : 보낼 데이터(id는 AI값 자동)
-      axios.post('http://localhost:3000/todos',{
-        subject : todo.subject,
-        completed : todo.completed,
-      }).then(res => {
-        console.log(res);
-        todos.value.push(res.data);
-      }).catch(err => {
+
+    const getTodos = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/todos');
+        todos.value=(res.data);
+      } catch (err) {
         console.log(err);
         error.value = 'Something went wrong';
-      }); 
+      }
+    };
+
+    //조회 시, TodoList목록 가져오는 함수 실행
+    getTodos();
+
+    /* 자식(TodoSimpleForm.vue)로 부터 추가된 TodoList {}값
+    을 받아서 추가해준다. */
+    const addTodo = async (todo) => {
+      error.value = '';
+      try {
+        //DB에 todo를 저장
+        //axios 2번째 인자 : 보낼 데이터(id는 AI값 자동)
+        const res = await axios.post('http://localhost:3000/todos',{
+          subject : todo.subject,
+          completed : todo.completed,
+        });
+        todos.value.push(res.data);
+      } catch (err) {
+        console.log(err);
+        error.value = 'Something went wrong';
+      }
+      // .then(res => {
+      //   console.log(res);
+      //   todos.value.push(res.data);
+      // }).catch(err => {
+      //   console.log(err);
+      //   error.value = 'Something went wrong';
+      // }); 
     }
     /* //emit을 안썼을때 방식
         todos.value.push({
@@ -66,14 +87,30 @@ export default {
         });
     */
     
-    const toggleTodo = (idx) => {
-      console.log('전 : ',todos.value[idx]);
-      todos.value[idx].completed = !todos.value[idx].completed;
-      console.log('후 : ',todos.value[idx]);
+    const toggleTodo = async (idx) => {
+      error.value = '';
+      const id = todos.value[idx].id;
+      try {
+        await axios.patch('http://localhost:3000/todos/' + id, {
+          completed : !todos.value[idx].completed
+        });
+        todos.value[idx].completed = !todos.value[idx].completed;
+      } catch (err) {
+        console.log(err);
+        error.value = 'Something went wrong';
+      }
     };
 
-    const deleteTodo = (idx) => {
-      todos.value.splice(idx,1);
+    const deleteTodo = async (idx) => {
+      error.value = '';
+      const id = todos.value[idx].id;
+      try {
+        await axios.delete('http://localhost:3000/todos/' + id);
+        todos.value.splice(idx,1);
+      } catch (error) {
+        console.log(error);
+        error.value = 'Something went wrong';
+      }
     }
 
     const searchText = ref('');
@@ -96,7 +133,8 @@ export default {
       toggleTodo,
       searchText,
       filteredTodos,
-      error
+      error,
+      getTodos
     }
   }
 }

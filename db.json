@@ -1,19 +1,19 @@
 {
   "todos": [
     {
-      "subject": "dsf",
-      "completed": false,
-      "id": 1
-    },
-    {
-      "subject": "qwer",
-      "completed": false,
-      "id": 2
-    },
-    {
       "subject": "buy milk",
-      "completed": false,
+      "completed": true,
       "id": 3
+    },
+    {
+      "subject": "ㅁㄴㅇㄹ",
+      "completed": false,
+      "id": 4
+    },
+    {
+      "subject": "ㅂㅈㄷㄱ",
+      "completed": false,
+      "id": 5
     }
   ]
 }
