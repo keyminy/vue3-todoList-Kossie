@@ -5,44 +5,22 @@
     <div v-if="!todos.length">
       추가된 Todo가 없습니다.
     </div>
-    <div
-      v-for="(todo,idx) in todos" 
-      :key="todo.id"
-      class="card mt-2"
-    >
-      <div class="card-body p-2 d-flex align-items-center">
-        <!--여기서 flex-grow-1하면 Delete버튼이 맨 오른쪽으로 가게-->
-        <div class="form-check flex-grow-1">
-          <input 
-            class="form-check-input"
-            type="checkbox"
-            v-model="todo.completed"
-          >
-          <label 
-            class="form-check-label"
-            :class="{todo : todo.completed}">
-            {{todo.subject}}
-          </label>
-        </div>
-        <div>
-          <button 
-            class="btn btn-danger btn-sm"
-            @click="deleteTodo(idx)">
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+    <TodoListVue 
+      :todos="todos"
+      @toggle-todo="toggleTodo"  
+    />
   </div>
 </template>
 
 <script>
 import {ref} from 'vue';
 import TodoSimpleFormVue from './components/TodoSimpleForm.vue';
+import TodoListVue from './components/TodoList.vue';
 
 export default {
   components : {
-    TodoSimpleFormVue
+    TodoSimpleFormVue,
+    TodoListVue
   },
   setup () {
 
@@ -66,6 +44,11 @@ export default {
         });
     */
     
+    const toggleTodo = (idx) => {
+      console.log('전 : ',todos.value[idx]);
+      todos.value[idx].completed = !todos.value[idx].completed;
+      console.log('후 : ',todos.value[idx]);
+    };
 
     const deleteTodo = (idx) => {
       todos.value.splice(idx,1);
@@ -75,7 +58,8 @@ export default {
       todos,
       todoStyle,
       addTodo,
-      deleteTodo
+      deleteTodo,
+      toggleTodo
     }
   }
 }
