@@ -11,39 +11,14 @@
       "id": 11
     },
     {
-      "subject": "7",
+      "subject": "수정zf",
       "completed": false,
       "id": 12
     },
     {
-      "subject": "8",
+      "subject": "8ff",
       "completed": false,
       "id": 13
-    },
-    {
-      "subject": "ㅂㅈㄱ",
-      "completed": false,
-      "id": 14
-    },
-    {
-      "subject": "qwer",
-      "completed": false,
-      "id": 15
-    },
-    {
-      "subject": "zz",
-      "completed": false,
-      "id": 16
-    },
-    {
-      "subject": "rr",
-      "completed": false,
-      "id": 17
-    },
-    {
-      "subject": "ㅋㅋ",
-      "completed": false,
-      "id": 18
     }
   ]
 }
