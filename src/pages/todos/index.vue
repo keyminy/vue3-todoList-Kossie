@@ -1,6 +1,14 @@
 <template>
   <div>
-    <h2>To-Do List</h2>
+    <div class="d-flex justify-content-between mb-3">
+      <h2>To-Do List</h2>
+      <button 
+        class="btn btn-primary"
+        @click="moveToCreatePage"
+      >
+        Create Todo
+      </button>
+    </div>
     <input 
         class="form-control"
         type="text" 
@@ -9,8 +17,6 @@
         @keyup.enter="searchTodo"
     >
     <hr/>
-    <TodoSimpleFormVue @add-todo="addTodo"/>
-    <div style="color: tomato">{{ error }}</div>
     <div v-if="!todos.length">
       추가된 Todo가 없습니다.
     </div>
@@ -62,19 +68,19 @@
 
 <script>
 import {ref,computed,watch} from 'vue';
-import TodoSimpleFormVue from '@/components/TodoSimpleForm.vue';
 import TodoListVue from '@/components/TodoList.vue';
 import axios from 'axios';
 import ToastVue from '@/components/Toast.vue';
 import {useToast} from '@/composables/toast';
+import { useRouter } from 'vue-router';
 
 export default {
   components : {
-    TodoSimpleFormVue,
     TodoListVue,
     ToastVue
   },
   setup () {
+    const router = useRouter();
     const todos = ref([]);
     const error = ref('');
     /* 페이징 처리 변수들 */
@@ -228,6 +234,12 @@ export default {
     //   return todos.value;
     // });
 
+    const moveToCreatePage = () => {
+      router.push({
+        name : 'TodoCreate'
+      })
+    }
+
     return {
       todos,
       todoStyle,
@@ -243,7 +255,8 @@ export default {
       searchTodo,
       toastMessage,
       toastAlertType,
-      showToast
+      showToast,
+      moveToCreatePage
     }
   }
 }

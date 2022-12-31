@@ -10,19 +10,18 @@
       @click="moveToPage(todo.id)"
     >
       <!--여기서 flex-grow-1하면 Delete버튼이 맨 오른쪽으로 가게-->
-      <div class="form-check flex-grow-1">
+      <div class="flex-grow-1">
         <input 
-          class="form-check-input"
+          class="ml-2 mr-2"
           type="checkbox"
           :checked="todo.completed"
           @change="toggleTodo(idx, $event)"
           @click.stop
         >
-        <label 
-          class="form-check-label"
+        <span 
           :class="{todo : todo.completed}">
           {{todo.subject}}
-        </label>
+        </span>
       </div>
       <div>
         <button 
