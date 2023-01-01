@@ -1,37 +1,43 @@
 <template>
-  <div
+  <!-- <div
     v-for="(todo,idx) in todos" 
     :key="todo.id"
     class="card mt-2"
+  > -->
+  <ListVue
+    :items="todos"
   >
-    <div
-      class="card-body p-2 d-flex align-items-center"
-      style="cursor : pointer"
-      @click="moveToPage(todo.id)"
-    >
-      <!--여기서 flex-grow-1하면 Delete버튼이 맨 오른쪽으로 가게-->
-      <div class="flex-grow-1">
-        <input 
-          class="ml-2 mr-2"
-          type="checkbox"
-          :checked="todo.completed"
-          @change="toggleTodo(idx, $event)"
-          @click.stop
-        >
-        <span 
-          :class="{todo : todo.completed}">
-          {{todo.subject}}
-        </span>
+    <template v-slot:default="{item,idx}">
+      <div
+        class="card-body p-2 d-flex align-items-center"
+        style="cursor : pointer"
+        @click="moveToPage(item.id)"
+      >
+        <!--여기서 flex-grow-1하면 Delete버튼이 맨 오른쪽으로 가게-->
+        <div class="flex-grow-1">
+          <input 
+            class="ml-2 mr-2"
+            type="checkbox"
+            :checked="item.completed"
+            @change="toggleTodo(idx, $event)"
+            @click.stop
+          >
+          <span 
+            :class="{todo : item.completed}">
+            {{item.subject}}
+          </span>
+        </div>
+        <div>
+          <button 
+            class="btn btn-danger btn-sm"
+            @click.stop="openModal(item.id)">
+            Delete
+          </button>
+        </div>
       </div>
-      <div>
-        <button 
-          class="btn btn-danger btn-sm"
-          @click.stop="openModal(todo.id)">
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
+    </template>
+  </ListVue>
+  <!-- </div> -->
   <teleport to="#modal">
     <ModalVue
       v-if="showModal"
@@ -43,12 +49,14 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import ModalVue from './Modal.vue';
+import ModalVue from './DeleteModal.vue';
 import {ref} from 'vue';
+import ListVue from './List.vue';
 
 export default {
   components:{
-    ModalVue
+    ModalVue,
+    ListVue
   },
   props: {
     todos : {
