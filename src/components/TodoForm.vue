@@ -8,18 +8,11 @@
   >
     <div class="row">
       <div class="col-6">
-        <div class="form-group">
-          <label>Subject</label>
-          <input 
-            v-model="todo.subject" 
-            type="text" 
-            class="form-control"
-          >
-          <div v-if="subjectError"
-            class="text-red">
-            {{ subjectError }}
-          </div>
-        </div>
+        <InputVue 
+          label="Subject"
+          v-model:subject="todo.subject"
+          :error="subjectError"
+        />
       </div>
       <div class="col-6" v-if="editing">
         <div class="form-group">
@@ -71,14 +64,16 @@
 <script>
 import { useRoute,useRouter } from 'vue-router';
 import axios from 'axios';
-import { ref,computed } from 'vue';
+import { ref,computed,onUpdated } from 'vue';
 import _ from 'lodash';
 import ToastVue from '@/components/Toast.vue';
 import {useToast} from '@/composables/toast';
+import InputVue from './Input.vue';
 
 export default {
   components : {
-    ToastVue
+    ToastVue,
+    InputVue
   },
   props : {
     editing: {
@@ -94,6 +89,11 @@ export default {
       completed:false,
       body: ''
     });
+
+    onUpdated(() => {
+          console.log(todo.value.subject)
+        })
+
     const originalTodo = ref(null);
     const loading = ref(false);
     const subjectError = ref('');
@@ -165,6 +165,7 @@ export default {
       getTodo();
     }
    
+
     const onSave = async () => {
       subjectError.value='';//초기화
       if(!todo.value.subject){
@@ -222,9 +223,6 @@ export default {
 </script>
 
 <style scoped>
-  .text-red {
-    color:red;
-  }
   .fade-enter-active,
   .fade-leave-active {
     transition : all 0.5s ease;
