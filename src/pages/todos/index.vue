@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="opacity: 0.5">
     <div class="d-flex justify-content-between mb-3">
       <h2>To-Do List</h2>
       <button 
@@ -196,9 +196,10 @@ export default {
       }
     };
 
-    const deleteTodo = async (idx) => {
+    const deleteTodo = async (id) => {
       error.value = '';
-      const id = todos.value[idx].id;
+      //id찾는 과정 불필요해짐
+      //const id = todos.value[idx].id;
       try {
         await axios.delete('http://localhost:3000/todos/' + id);
         getTodos(1);

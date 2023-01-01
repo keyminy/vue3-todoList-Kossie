@@ -26,18 +26,30 @@
       <div>
         <button 
           class="btn btn-danger btn-sm"
-          @click.stop="deleteTodo(idx)">
+          @click.stop="openModal(todo.id)">
           Delete
         </button>
       </div>
     </div>
   </div>
+  <teleport to="#modal">
+    <ModalVue
+      v-if="showModal"
+      @close="closeModal"
+      @delete="deleteTodo"
+    />
+  </teleport>
 </template>
 
 <script>
 import { useRouter } from 'vue-router';
+import ModalVue from './Modal.vue';
+import {ref} from 'vue';
 
 export default {
+  components:{
+    ModalVue
+  },
   props: {
     todos : {
       tpye: Array,
@@ -47,14 +59,28 @@ export default {
   emits:['toggle-todo','delete-todo'],
   setup (props,{emit}) {
     const router = useRouter();
+    /* Modal관련 */
+    const showModal = ref(false);
+    const todoDeleteId = ref(null);//삭제할 todoId
+    const openModal = (id) => {
+      //매개변수로 오는 id는 삭제할 todo.id
+      todoDeleteId.value = id; 
+      showModal.value = true;
+    }
+    const closeModal = () => {
+      todoDeleteId.value = null;
+      showModal.value = false;
+    }
 
     const toggleTodo = (idx,event) => {
       //idx를 부모컴포넌트로 보내준다.
       emit('toggle-todo',idx,event.target.checked);
     }
-    //App.vue부모컴포넌트에 idx값 전달
-    const deleteTodo = (idx) => {
-      emit('delete-todo',idx);
+    //App.vue부모컴포넌트에 todoDeleteId전달
+    const deleteTodo = () => {
+      emit('delete-todo',todoDeleteId.value);
+      showModal.value = false;
+      todoDeleteId.value = null;
     };
 
     const moveToPage = (todoId) => {
@@ -68,7 +94,10 @@ export default {
     return {
       toggleTodo,
       deleteTodo,
-      moveToPage
+      moveToPage,
+      showModal,
+      openModal,
+      closeModal
     }
   }
 }
