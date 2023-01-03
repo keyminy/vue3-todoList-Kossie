@@ -69,7 +69,7 @@
 <script>
 import {ref,computed,watch} from 'vue';
 import TodoListVue from '@/components/TodoList.vue';
-import axios from 'axios';
+import axios from '@/axios';
 import ToastVue from '@/components/Toast.vue';
 import {useToast} from '@/composables/toast';
 import { useRouter } from 'vue-router';
@@ -132,7 +132,7 @@ export default {
       currentPage.value = page;
       try {
         const res = await axios.get(
-          `http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+          `todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
         );
         numberOfTodos.value = res.headers['x-total-count'];
         todos.value=(res.data);
@@ -153,7 +153,7 @@ export default {
       try {
         //DB에 todo를 저장
         //axios 2번째 인자 : 보낼 데이터(id는 AI값 자동)
-        await axios.post('http://localhost:3000/todos',{
+        await axios.post('todos',{
           subject : todo.subject,
           completed : todo.completed,
         });
@@ -185,7 +185,7 @@ export default {
       error.value = '';
       const id = todos.value[idx].id;
       try {
-        await axios.patch('http://localhost:3000/todos/' + id, {
+        await axios.patch('todos/' + id, {
           completed : checked
         });
         todos.value[idx].completed = checked;
@@ -201,7 +201,7 @@ export default {
       //id찾는 과정 불필요해짐
       //const id = todos.value[idx].id;
       try {
-        await axios.delete('http://localhost:3000/todos/' + id);
+        await axios.delete('todos/' + id);
         getTodos(1);
         //todos.value.splice(idx,1);
       } catch (error) {

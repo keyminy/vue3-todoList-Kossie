@@ -25,11 +25,12 @@
 
 <script>
 import {ref} from 'vue';
+import {getCurrentInstance} from 'vue';
 
 export default {
   emits:['add-todo'],
-  setup (props,context) {
-    
+  setup () {
+    const {emit} = getCurrentInstance();
     const todo = ref('');
     const hasError = ref(false);
 
@@ -39,7 +40,7 @@ export default {
       }else{
         //input창에 값을 입력한 경우니까 push
         /* App.vue로 이벤트 보내기(18) */
-        context.emit('add-todo',{
+        emit('add-todo',{
           //부모 컴포넌트로 올려줄 데이터
           id: Date.now(),
           subject : todo.value,

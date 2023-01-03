@@ -63,7 +63,7 @@
 
 <script>
 import { useRoute,useRouter } from 'vue-router';
-import axios from 'axios';
+import axios from '@/axios';
 import { ref,computed,onUpdated } from 'vue';
 import _ from 'lodash';
 import ToastVue from '@/components/Toast.vue';
@@ -132,7 +132,7 @@ export default {
       loading.value = true;
       try {
         const res = 
-          await axios.get('http://localhost:3000/todos/'+route.params.id);
+          await axios.get('todos/'+route.params.id);
         todo.value = {...res.data};
         originalTodo.value= {...res.data};
         //axios를 통해 값을 넣으면 loading을 false로
@@ -183,22 +183,24 @@ export default {
         if(props.editing){
           //editing이면 put요청
           res = 
-            await axios.put(`
-            http://localhost:3000/todos/${route.params.id}
-            `,data);
+            await axios.put(`todos/${route.params.id}`,data);
             originalTodo.value = {...res.data};
         }else{
           //create일 경우 post요청
           res = 
-            await axios.post(`
-            http://localhost:3000/todos
-            `,data);
+            await axios.post(`todos`,data);
             //Create후 Form들 빈값으로 초기화
             todo.value.subject = '';
             todo.value.body = '';
         }
         const msg = 'Successfully ' +  (props.editing?'Updated':'Created');
         triggerToast(msg);
+        //Create 생성 후,TodoList페이지로 이동하게 하기
+        if(!props.editing){
+          router.push({
+            name:'Todos'
+          })
+        }
       } catch (error) {
         console.log(error);
         //error가 있으면 에러가 있다는 Toast알림창 보내기

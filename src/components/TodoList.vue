@@ -52,6 +52,7 @@ import { useRouter } from 'vue-router';
 import ModalVue from './DeleteModal.vue';
 import {ref} from 'vue';
 import ListVue from './List.vue';
+import {getCurrentInstance} from 'vue';
 
 export default {
   components:{
@@ -65,7 +66,8 @@ export default {
     }
   },
   emits:['toggle-todo','delete-todo'],
-  setup (props,{emit}) {
+  setup () {
+    const {emit} = getCurrentInstance();
     const router = useRouter();
     /* Modal관련 */
     const showModal = ref(false);
