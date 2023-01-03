@@ -52,13 +52,6 @@
       Cancle
     </button>
   </form>
-  <transition name="fade">
-    <ToastVue 
-      v-if="showToast"
-      :message="toastMessage"
-      :type="toastAlertType"
-    />
-  </transition>
 </template>
 
 <script>
@@ -66,13 +59,12 @@ import { useRoute,useRouter } from 'vue-router';
 import axios from '@/axios';
 import { ref,computed,onUpdated } from 'vue';
 import _ from 'lodash';
-import ToastVue from '@/components/Toast.vue';
 import {useToast} from '@/composables/toast';
 import InputVue from './Input.vue';
 
+
 export default {
   components : {
-    ToastVue,
     InputVue
   },
   props : {
@@ -225,20 +217,5 @@ export default {
 </script>
 
 <style scoped>
-  .fade-enter-active,
-  .fade-leave-active {
-    transition : all 0.5s ease;
-  }
-  /*시작할때와 끝날때의 상태 */
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
-    /* 위에서 아래로 내려오는 애니메이션 */
-    transform : translateY(-30px); /* 30px위에서 시작함 */
-  }
-  .fade-enter-to,
-  .fade-leave-from {
-    opacity: 1;
-    transform : translateY(0px);
-  }
+
 </style>

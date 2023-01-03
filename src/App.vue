@@ -3,7 +3,6 @@
     <router-link class="navbar-brand" :to="{name : 'Home'}">
       Kossie Coder
     </router-link>
-
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <router-link class="nav-link" :to="{name : 'Todos'}">
@@ -15,11 +14,20 @@
   <div class="container">
     <router-view/>
   </div>
+  <ToastVue/>
 </template>
 
 <script>
+import ToastVue from './components/Toast.vue';
+
 export default {
- 
+  components : {
+    ToastVue
+  },
+  setup() {
+    return {
+    }
+  }
 }
 </script>
 
