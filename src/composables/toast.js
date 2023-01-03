@@ -23,7 +23,7 @@ export const useToast = () => {
     //   toastAlertType.value = '';
     //   showToast.value = false; //v-if랑 연결됨
     // },3000);
-    store.dispatch('toast/triggerToast',message,type);
+    store.dispatch('toast/triggerToast',{message:message,type:type});
   }
   
   /* End Toast관련 */

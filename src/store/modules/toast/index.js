@@ -31,7 +31,8 @@ export default {
 
   },
   actions:{
-    triggerToast({commit},message,type = 'success') {
+    triggerToast({commit},payload) {
+      //에러 : message,type = 'success'
       /* 매개변수로 오는 type의 값은 default로 'success'값 들어옴*/
       /*//하나의 Toast만 이용햇던 방식
       commit('UPDATE_TOAST_MESSAGE',message);
@@ -40,8 +41,8 @@ export default {
       */
      commit('ADD_TOAST',{
       id : Date.now(),
-      message : message,
-      type : type
+      message : payload.message,
+      type : payload.type
      });
 
 
